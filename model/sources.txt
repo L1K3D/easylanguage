@@ -1,0 +1,7 @@
+C:\Users\Heitor\Documents\Program\easylanguage\model\src\main\java\com\easylanguage\Main.java
+C:\Users\Heitor\Documents\Program\easylanguage\model\src\main\java\com\easylanguage\generated\EasyLanguageBaseListener.java
+C:\Users\Heitor\Documents\Program\easylanguage\model\src\main\java\com\easylanguage\generated\EasyLanguageLexer.java
+C:\Users\Heitor\Documents\Program\easylanguage\model\src\main\java\com\easylanguage\generated\EasyLanguageListener.java
+C:\Users\Heitor\Documents\Program\easylanguage\model\src\main\java\com\easylanguage\generated\EasyLanguageParser.java
+C:\Users\Heitor\Documents\Program\easylanguage\model\src\main\java\com\easylanguage\runtime\Interpreter.java
+C:\Users\Heitor\Documents\Program\easylanguage\model\src\main\java\com\easylanguage\runtime\SymbolTable.java

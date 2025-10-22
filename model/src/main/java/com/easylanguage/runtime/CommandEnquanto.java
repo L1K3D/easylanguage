@@ -13,7 +13,7 @@ public class CommandEnquanto implements ICommand {
 
     @Override
     public void execute(SymbolTable symbols) {
-        while (condition.eval(symbols) != 0) {
+        while (condition.evalAsBool(symbols)) {
             for (ICommand cmd : body) {
                 cmd.execute(symbols);
             }

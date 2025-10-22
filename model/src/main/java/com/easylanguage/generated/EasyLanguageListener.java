@@ -1,5 +1,5 @@
-// Generated from ./src/main/antlr4/com/easylanguage/EasyLanguage.g4 by ANTLR 4.13.2
 package com.easylanguage.generated;
+// Generated from ./src/main/antlr4/com/easylanguage/EasyLanguage.g4 by ANTLR 4.13.2
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -57,4 +57,34 @@ public interface EasyLanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitWrite(EasyLanguageParser.WriteContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link EasyLanguageParser#enquantoCmd}.
+	 * @param ctx the parse tree
+	 */
+	void enterEnquantoCmd(EasyLanguageParser.EnquantoCmdContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EasyLanguageParser#enquantoCmd}.
+	 * @param ctx the parse tree
+	 */
+	void exitEnquantoCmd(EasyLanguageParser.EnquantoCmdContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link EasyLanguageParser#paraCmd}.
+	 * @param ctx the parse tree
+	 */
+	void enterParaCmd(EasyLanguageParser.ParaCmdContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EasyLanguageParser#paraCmd}.
+	 * @param ctx the parse tree
+	 */
+	void exitParaCmd(EasyLanguageParser.ParaCmdContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link EasyLanguageParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpr(EasyLanguageParser.ExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EasyLanguageParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpr(EasyLanguageParser.ExprContext ctx);
 }

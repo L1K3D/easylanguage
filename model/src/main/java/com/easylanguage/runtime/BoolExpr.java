@@ -8,7 +8,7 @@ public class BoolExpr implements IExpr {
     }
 
     @Override
-    public Object eval(SymbolTable symbols) {
-        return value;
+    public int eval(SymbolTable symbols) {
+        return value ? 1 : 0;
     }
 }

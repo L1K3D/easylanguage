@@ -50,7 +50,7 @@ public class Interpreter extends EasyLanguageBaseListener {
             // Atribuição simples: ID = expr
             String varName = ctx.ID().getText();
             IExpr expr = buildExpr(ctx.expr(0));
-            Object value = expr.eval(symbols);
+            int value = expr.evalAsInt(symbols);
             symbols.assign(varName, value);
         }
     }
@@ -58,7 +58,7 @@ public class Interpreter extends EasyLanguageBaseListener {
     @Override
     public void exitWrite(EasyLanguageParser.WriteContext ctx) {
         IExpr expr = buildExpr(ctx.expr());
-        System.out.println(expr.eval(symbols));
+        System.out.println(expr.evalAsInt(symbols));
     }
 
     @Override
@@ -76,59 +76,135 @@ public class Interpreter extends EasyLanguageBaseListener {
     // -------- Helpers --------
 
     private IExpr buildExpr(EasyLanguageParser.ExprContext ctx) {
-        if (ctx.NUMBER() != null) {
-            final int value = Integer.parseInt(ctx.NUMBER().getText());
+        // Trate cada subclasse gerada de ExprContext explicitamente
+        if (ctx instanceof EasyLanguageParser.NumberExprContext) {
+            EasyLanguageParser.NumberExprContext nctx = (EasyLanguageParser.NumberExprContext) ctx;
+            final int value = Integer.parseInt(nctx.NUMBER().getText());
             return new IExpr() {
                 @Override
-                public Object eval(SymbolTable symbols) {
+                public int eval(SymbolTable symbols) {
                     return value;
                 }
             };
         }
-        if (ctx.VERDADEIRO() != null) {
+
+        if (ctx instanceof EasyLanguageParser.TrueExprContext) {
             return new BoolExpr(true);
         }
-        if (ctx.FALSO() != null) {
+
+        if (ctx instanceof EasyLanguageParser.FalseExprContext) {
             return new BoolExpr(false);
         }
-        if (ctx.ID() != null) {
-            if (ctx.ABRECOL() != null) {
-                // Acesso a array: ID[expr]
-                String arrayName = ctx.ID().getText();
-                IExpr index = buildExpr(ctx.expr(0));
-                return new ArrayAccessExpr(arrayName, index);
-            }
-            return new VarExpr(ctx.ID().getText());
+
+        if (ctx instanceof EasyLanguageParser.VarExprContext) {
+            EasyLanguageParser.VarExprContext vctx = (EasyLanguageParser.VarExprContext) ctx;
+            return new VarExpr(vctx.ID().getText());
         }
-        if (ctx.E() != null) {
-            // Operador E: expr E expr
-            return new AndExpr(buildExpr(ctx.expr(0)), buildExpr(ctx.expr(1)));
+
+        if (ctx instanceof EasyLanguageParser.ArrayAccessExprContext) {
+            EasyLanguageParser.ArrayAccessExprContext actx = (EasyLanguageParser.ArrayAccessExprContext) ctx;
+            String arrayName = actx.ID().getText();
+            IExpr index = buildExpr(actx.expr());
+            return new ArrayAccessExpr(arrayName, index);
         }
-        if (ctx.OU() != null) {
-            // Operador OU: expr OU expr
-            return new OrExpr(buildExpr(ctx.expr(0)), buildExpr(ctx.expr(1)));
+
+        if (ctx instanceof EasyLanguageParser.AndExprContext) {
+            EasyLanguageParser.AndExprContext actx = (EasyLanguageParser.AndExprContext) ctx;
+            return new AndExpr(buildExpr(actx.expr(0)), buildExpr(actx.expr(1)));
         }
-        if (ctx.NAO() != null) {
-            // Operador NAO: NAO expr
-            return new NotExpr(buildExpr(ctx.expr(0)));
+
+        if (ctx instanceof EasyLanguageParser.OrExprContext) {
+            EasyLanguageParser.OrExprContext octx = (EasyLanguageParser.OrExprContext) ctx;
+            return new OrExpr(buildExpr(octx.expr(0)), buildExpr(octx.expr(1)));
         }
-        // Operadores relacionais
-        if (ctx.MENOR() != null) {
-            return new RelationalExpr("<", buildExpr(ctx.expr(0)), buildExpr(ctx.expr(1)));
+
+        if (ctx instanceof EasyLanguageParser.NotExprContext) {
+            EasyLanguageParser.NotExprContext nctx = (EasyLanguageParser.NotExprContext) ctx;
+            return new NotExpr(buildExpr(nctx.expr()));
         }
-        if (ctx.MAIOR() != null) {
-            return new RelationalExpr(">", buildExpr(ctx.expr(0)), buildExpr(ctx.expr(1)));
+
+        // Operações binárias: trate cada tipo de expressão binária explicitamente
+        if (ctx instanceof EasyLanguageParser.AddExprContext) {
+            EasyLanguageParser.AddExprContext c = (EasyLanguageParser.AddExprContext) ctx;
+            IExpr left = buildExpr(c.expr(0));
+            IExpr right = buildExpr(c.expr(1));
+            return new AddExpr(left, right);
         }
-        if (ctx.IGUAL() != null) {
-            return new RelationalExpr("==", buildExpr(ctx.expr(0)), buildExpr(ctx.expr(1)));
+
+        if (ctx instanceof EasyLanguageParser.SubExprContext) {
+            EasyLanguageParser.SubExprContext c = (EasyLanguageParser.SubExprContext) ctx;
+            IExpr left = buildExpr(c.expr(0));
+            IExpr right = buildExpr(c.expr(1));
+            return new SubExpr(left, right);
         }
-        if (ctx.DIFERENTE() != null) {
-            return new RelationalExpr("!=", buildExpr(ctx.expr(0)), buildExpr(ctx.expr(1)));
+
+        if (ctx instanceof EasyLanguageParser.MulExprContext) {
+            EasyLanguageParser.MulExprContext c = (EasyLanguageParser.MulExprContext) ctx;
+            IExpr left = buildExpr(c.expr(0));
+            IExpr right = buildExpr(c.expr(1));
+            return new MulExpr(left, right);
         }
-        if (ctx.LPAREN() != null) {
-            // Parênteses: (expr)
-            return buildExpr(ctx.expr(0));
+
+        if (ctx instanceof EasyLanguageParser.DivExprContext) {
+            EasyLanguageParser.DivExprContext c = (EasyLanguageParser.DivExprContext) ctx;
+            IExpr left = buildExpr(c.expr(0));
+            IExpr right = buildExpr(c.expr(1));
+            return new DivExpr(left, right);
         }
+
+        if (ctx instanceof EasyLanguageParser.LtExprContext) {
+            EasyLanguageParser.LtExprContext c = (EasyLanguageParser.LtExprContext) ctx;
+            IExpr left = buildExpr(c.expr(0));
+            IExpr right = buildExpr(c.expr(1));
+            return new RelationalExpr(left, "<", right);
+        }
+
+        if (ctx instanceof EasyLanguageParser.GtExprContext) {
+            EasyLanguageParser.GtExprContext c = (EasyLanguageParser.GtExprContext) ctx;
+            IExpr left = buildExpr(c.expr(0));
+            IExpr right = buildExpr(c.expr(1));
+            return new RelationalExpr(left, ">", right);
+        }
+
+        if (ctx instanceof EasyLanguageParser.EqExprContext) {
+            EasyLanguageParser.EqExprContext c = (EasyLanguageParser.EqExprContext) ctx;
+            IExpr left = buildExpr(c.expr(0));
+            IExpr right = buildExpr(c.expr(1));
+            return new RelationalExpr(left, "==", right);
+        }
+
+        if (ctx instanceof EasyLanguageParser.NeqExprContext) {
+            EasyLanguageParser.NeqExprContext c = (EasyLanguageParser.NeqExprContext) ctx;
+            IExpr left = buildExpr(c.expr(0));
+            IExpr right = buildExpr(c.expr(1));
+            return new RelationalExpr(left, "!=", right);
+        }
+
+        if (ctx instanceof EasyLanguageParser.LtExprContext) {
+            EasyLanguageParser.LtExprContext lctx = (EasyLanguageParser.LtExprContext) ctx;
+            return new RelationalExpr("<", buildExpr(lctx.expr(0)), buildExpr(lctx.expr(1)));
+        }
+
+        if (ctx instanceof EasyLanguageParser.GtExprContext) {
+            EasyLanguageParser.GtExprContext gctx = (EasyLanguageParser.GtExprContext) ctx;
+            return new RelationalExpr(">", buildExpr(gctx.expr(0)), buildExpr(gctx.expr(1)));
+        }
+
+        if (ctx instanceof EasyLanguageParser.EqExprContext) {
+            EasyLanguageParser.EqExprContext ectx = (EasyLanguageParser.EqExprContext) ctx;
+            return new RelationalExpr("==", buildExpr(ectx.expr(0)), buildExpr(ectx.expr(1)));
+        }
+
+        if (ctx instanceof EasyLanguageParser.NeqExprContext) {
+            EasyLanguageParser.NeqExprContext nctx = (EasyLanguageParser.NeqExprContext) ctx;
+            return new RelationalExpr("!=", buildExpr(nctx.expr(0)), buildExpr(nctx.expr(1)));
+        }
+
+        if (ctx instanceof EasyLanguageParser.ParenExprContext) {
+            EasyLanguageParser.ParenExprContext pctx = (EasyLanguageParser.ParenExprContext) ctx;
+            return buildExpr(pctx.expr());
+        }
+
         throw new RuntimeException("Tipo de expressão não suportado: " + ctx.getText());
     }
 
@@ -157,7 +233,7 @@ public class Interpreter extends EasyLanguageBaseListener {
                 result.add(new ICommand() {
                     @Override
                     public void execute(SymbolTable symbols) {
-                        System.out.println(expr.eval(symbols));
+                        System.out.println(expr.evalAsInt(symbols));
                     }
                 });
             } else if (cmdCtx.paraCmd() != null) {

@@ -8,7 +8,7 @@ public class VarExpr implements IExpr {
     }
 
     @Override
-    public Object eval(SymbolTable symbols) {
-        return symbols.get(name);
+    public int eval(SymbolTable symbols) {
+        return (Integer) symbols.get(name);
     }
 }

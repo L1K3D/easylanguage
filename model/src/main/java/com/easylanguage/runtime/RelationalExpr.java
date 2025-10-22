@@ -9,25 +9,30 @@ public class RelationalExpr implements IExpr {
         this.left = left;
         this.right = right;
     }
+
+    // Construtor com ordem (left, op, right) para compatibilidade com exemplos
+    public RelationalExpr(IExpr left, String op, IExpr right) {
+        this(op, left, right);
+    }
     
     @Override
-    public Object eval(SymbolTable symbols) {
-        int leftValue = left.evalAsInt(symbols);
-        int rightValue = right.evalAsInt(symbols);
+    public int eval(SymbolTable symbols) {
+        int leftValue = left.eval(symbols);
+        int rightValue = right.eval(symbols);
         
         switch (operator) {
             case "<":
-                return leftValue < rightValue;
+                return leftValue < rightValue ? 1 : 0;
             case "<=":
-                return leftValue <= rightValue;
+                return leftValue <= rightValue ? 1 : 0;
             case ">":
-                return leftValue > rightValue;
+                return leftValue > rightValue ? 1 : 0;
             case ">=":
-                return leftValue >= rightValue;
+                return leftValue >= rightValue ? 1 : 0;
             case "==":
-                return leftValue == rightValue;
+                return leftValue == rightValue ? 1 : 0;
             case "!=":
-                return leftValue != rightValue;
+                return leftValue != rightValue ? 1 : 0;
             default:
                 throw new RuntimeException("Operador relacional não suportado: " + operator);
         }

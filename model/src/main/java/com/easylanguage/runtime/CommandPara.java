@@ -15,7 +15,7 @@ public class CommandPara implements ICommand {
         this.end = end;
         this.step = (step != null) ? step : new IExpr() {
             @Override
-            public Object eval(SymbolTable symbols) {
+            public int eval(SymbolTable symbols) {
                 return 1;
             }
         };

@@ -18,9 +18,9 @@ public class EasyLanguageParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		INT=1, BOOLEANO=2, WRITE=3, ENQUANTO=4, FACA=5, PARA=6, DE=7, ATE=8, PASSO=9, 
-		VERDADEIRO=10, FALSO=11, E=12, OU=13, NAO=14, MENOR=15, MAIOR=16, IGUAL=17, 
-		DIFERENTE=18, ID=19, NUMBER=20, SEMI=21, EQ=22, LPAREN=23, RPAREN=24, 
-		ABRECOL=25, FECHACOL=26, WS=27;
+		VERDADEIRO=10, FALSO=11, E=12, OU=13, NAO=14, PLUS=15, MINUS=16, MUL=17, 
+		DIV=18, MENOR=19, MAIOR=20, IGUAL=21, DIFERENTE=22, ID=23, NUMBER=24, 
+		SEMI=25, EQ=26, LPAREN=27, RPAREN=28, ABRECOL=29, FECHACOL=30, WS=31;
 	public static final int
 		RULE_program = 0, RULE_command = 1, RULE_decl = 2, RULE_assign = 3, RULE_write = 4, 
 		RULE_enquantoCmd = 5, RULE_paraCmd = 6, RULE_expr = 7;
@@ -36,17 +36,17 @@ public class EasyLanguageParser extends Parser {
 		return new String[] {
 			null, "'int'", "'boolean'", "'escreva'", "'enquanto'", "'faca'", "'para'", 
 			"'de'", "'ate'", "'passo'", "'verdadeiro'", "'falso'", "'e'", "'ou'", 
-			"'nao'", "'<'", "'>'", "'=='", "'!='", null, null, "';'", "'='", "'('", 
-			"')'", "'['", "']'"
+			"'nao'", "'+'", "'-'", "'*'", "'/'", "'<'", "'>'", "'=='", "'!='", null, 
+			null, "';'", "'='", "'('", "')'", "'['", "']'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, "INT", "BOOLEANO", "WRITE", "ENQUANTO", "FACA", "PARA", "DE", "ATE", 
-			"PASSO", "VERDADEIRO", "FALSO", "E", "OU", "NAO", "MENOR", "MAIOR", "IGUAL", 
-			"DIFERENTE", "ID", "NUMBER", "SEMI", "EQ", "LPAREN", "RPAREN", "ABRECOL", 
-			"FECHACOL", "WS"
+			"PASSO", "VERDADEIRO", "FALSO", "E", "OU", "NAO", "PLUS", "MINUS", "MUL", 
+			"DIV", "MENOR", "MAIOR", "IGUAL", "DIFERENTE", "ID", "NUMBER", "SEMI", 
+			"EQ", "LPAREN", "RPAREN", "ABRECOL", "FECHACOL", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -133,7 +133,7 @@ public class EasyLanguageParser extends Parser {
 			setState(19);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 524382L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 8388702L) != 0)) {
 				{
 				{
 				setState(16);
@@ -652,38 +652,307 @@ public class EasyLanguageParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ExprContext extends ParserRuleContext {
-		public TerminalNode NUMBER() { return getToken(EasyLanguageParser.NUMBER, 0); }
-		public TerminalNode VERDADEIRO() { return getToken(EasyLanguageParser.VERDADEIRO, 0); }
-		public TerminalNode FALSO() { return getToken(EasyLanguageParser.FALSO, 0); }
-		public TerminalNode ID() { return getToken(EasyLanguageParser.ID, 0); }
-		public TerminalNode ABRECOL() { return getToken(EasyLanguageParser.ABRECOL, 0); }
+		public ExprContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_expr; }
+	 
+		public ExprContext() { }
+		public void copyFrom(ExprContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class MulExprContext extends ExprContext {
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
 		}
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class,i);
 		}
-		public TerminalNode FECHACOL() { return getToken(EasyLanguageParser.FECHACOL, 0); }
-		public TerminalNode NAO() { return getToken(EasyLanguageParser.NAO, 0); }
-		public TerminalNode LPAREN() { return getToken(EasyLanguageParser.LPAREN, 0); }
-		public TerminalNode RPAREN() { return getToken(EasyLanguageParser.RPAREN, 0); }
-		public TerminalNode MENOR() { return getToken(EasyLanguageParser.MENOR, 0); }
-		public TerminalNode MAIOR() { return getToken(EasyLanguageParser.MAIOR, 0); }
-		public TerminalNode IGUAL() { return getToken(EasyLanguageParser.IGUAL, 0); }
-		public TerminalNode DIFERENTE() { return getToken(EasyLanguageParser.DIFERENTE, 0); }
-		public TerminalNode E() { return getToken(EasyLanguageParser.E, 0); }
-		public TerminalNode OU() { return getToken(EasyLanguageParser.OU, 0); }
-		public ExprContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_expr; }
+		public TerminalNode MUL() { return getToken(EasyLanguageParser.MUL, 0); }
+		public MulExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).enterExpr(this);
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).enterMulExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).exitExpr(this);
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).exitMulExpr(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class AndExprContext extends ExprContext {
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public TerminalNode E() { return getToken(EasyLanguageParser.E, 0); }
+		public AndExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).enterAndExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).exitAndExpr(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class TrueExprContext extends ExprContext {
+		public TerminalNode VERDADEIRO() { return getToken(EasyLanguageParser.VERDADEIRO, 0); }
+		public TrueExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).enterTrueExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).exitTrueExpr(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class ArrayAccessExprContext extends ExprContext {
+		public TerminalNode ID() { return getToken(EasyLanguageParser.ID, 0); }
+		public TerminalNode ABRECOL() { return getToken(EasyLanguageParser.ABRECOL, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public TerminalNode FECHACOL() { return getToken(EasyLanguageParser.FECHACOL, 0); }
+		public ArrayAccessExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).enterArrayAccessExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).exitArrayAccessExpr(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class SubExprContext extends ExprContext {
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public TerminalNode MINUS() { return getToken(EasyLanguageParser.MINUS, 0); }
+		public SubExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).enterSubExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).exitSubExpr(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class LtExprContext extends ExprContext {
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public TerminalNode MENOR() { return getToken(EasyLanguageParser.MENOR, 0); }
+		public LtExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).enterLtExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).exitLtExpr(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class GtExprContext extends ExprContext {
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public TerminalNode MAIOR() { return getToken(EasyLanguageParser.MAIOR, 0); }
+		public GtExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).enterGtExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).exitGtExpr(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class AddExprContext extends ExprContext {
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public TerminalNode PLUS() { return getToken(EasyLanguageParser.PLUS, 0); }
+		public AddExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).enterAddExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).exitAddExpr(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class OrExprContext extends ExprContext {
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public TerminalNode OU() { return getToken(EasyLanguageParser.OU, 0); }
+		public OrExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).enterOrExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).exitOrExpr(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class FalseExprContext extends ExprContext {
+		public TerminalNode FALSO() { return getToken(EasyLanguageParser.FALSO, 0); }
+		public FalseExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).enterFalseExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).exitFalseExpr(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class DivExprContext extends ExprContext {
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public TerminalNode DIV() { return getToken(EasyLanguageParser.DIV, 0); }
+		public DivExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).enterDivExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).exitDivExpr(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class NumberExprContext extends ExprContext {
+		public TerminalNode NUMBER() { return getToken(EasyLanguageParser.NUMBER, 0); }
+		public NumberExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).enterNumberExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).exitNumberExpr(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class EqExprContext extends ExprContext {
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public TerminalNode IGUAL() { return getToken(EasyLanguageParser.IGUAL, 0); }
+		public EqExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).enterEqExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).exitEqExpr(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class NeqExprContext extends ExprContext {
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public TerminalNode DIFERENTE() { return getToken(EasyLanguageParser.DIFERENTE, 0); }
+		public NeqExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).enterNeqExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).exitNeqExpr(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class VarExprContext extends ExprContext {
+		public TerminalNode ID() { return getToken(EasyLanguageParser.ID, 0); }
+		public VarExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).enterVarExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).exitVarExpr(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class NotExprContext extends ExprContext {
+		public TerminalNode NAO() { return getToken(EasyLanguageParser.NAO, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public NotExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).enterNotExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).exitNotExpr(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class ParenExprContext extends ExprContext {
+		public TerminalNode LPAREN() { return getToken(EasyLanguageParser.LPAREN, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public TerminalNode RPAREN() { return getToken(EasyLanguageParser.RPAREN, 0); }
+		public ParenExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).enterParenExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EasyLanguageListener ) ((EasyLanguageListener)listener).exitParenExpr(this);
 		}
 	}
 
@@ -707,50 +976,72 @@ public class EasyLanguageParser extends Parser {
 			switch ( getInterpreter().adaptivePredict(_input,7,_ctx) ) {
 			case 1:
 				{
+				_localctx = new NotExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+
 				setState(101);
-				match(NUMBER);
+				match(NAO);
+				setState(102);
+				expr(7);
 				}
 				break;
 			case 2:
 				{
-				setState(102);
-				match(VERDADEIRO);
+				_localctx = new NumberExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(103);
+				match(NUMBER);
 				}
 				break;
 			case 3:
 				{
-				setState(103);
-				match(FALSO);
+				_localctx = new TrueExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(104);
+				match(VERDADEIRO);
 				}
 				break;
 			case 4:
 				{
-				setState(104);
-				match(ID);
+				_localctx = new FalseExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(105);
+				match(FALSO);
 				}
 				break;
 			case 5:
 				{
-				setState(105);
-				match(ID);
+				_localctx = new VarExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
 				setState(106);
-				match(ABRECOL);
-				setState(107);
-				expr(0);
-				setState(108);
-				match(FECHACOL);
+				match(ID);
 				}
 				break;
 			case 6:
 				{
+				_localctx = new ArrayAccessExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(107);
+				match(ID);
+				setState(108);
+				match(ABRECOL);
+				setState(109);
+				expr(0);
 				setState(110);
-				match(NAO);
-				setState(111);
-				expr(2);
+				match(FECHACOL);
 				}
 				break;
 			case 7:
 				{
+				_localctx = new ParenExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
 				setState(112);
 				match(LPAREN);
 				setState(113);
@@ -761,7 +1052,7 @@ public class EasyLanguageParser extends Parser {
 				break;
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(138);
+			setState(150);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,9,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -769,85 +1060,133 @@ public class EasyLanguageParser extends Parser {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(136);
+					setState(148);
 					_errHandler.sync(this);
 					switch ( getInterpreter().adaptivePredict(_input,8,_ctx) ) {
 					case 1:
 						{
-						_localctx = new ExprContext(_parentctx, _parentState);
+						_localctx = new MulExprContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(118);
-						if (!(precpred(_ctx, 8))) throw new FailedPredicateException(this, "precpred(_ctx, 8)");
+						if (!(precpred(_ctx, 17))) throw new FailedPredicateException(this, "precpred(_ctx, 17)");
 						setState(119);
-						match(MENOR);
+						match(MUL);
 						setState(120);
-						expr(9);
+						expr(18);
 						}
 						break;
 					case 2:
 						{
-						_localctx = new ExprContext(_parentctx, _parentState);
+						_localctx = new DivExprContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(121);
-						if (!(precpred(_ctx, 7))) throw new FailedPredicateException(this, "precpred(_ctx, 7)");
+						if (!(precpred(_ctx, 16))) throw new FailedPredicateException(this, "precpred(_ctx, 16)");
 						setState(122);
-						match(MAIOR);
+						match(DIV);
 						setState(123);
-						expr(8);
+						expr(17);
 						}
 						break;
 					case 3:
 						{
-						_localctx = new ExprContext(_parentctx, _parentState);
+						_localctx = new AddExprContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(124);
-						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
+						if (!(precpred(_ctx, 15))) throw new FailedPredicateException(this, "precpred(_ctx, 15)");
 						setState(125);
-						match(IGUAL);
+						match(PLUS);
 						setState(126);
-						expr(7);
+						expr(16);
 						}
 						break;
 					case 4:
 						{
-						_localctx = new ExprContext(_parentctx, _parentState);
+						_localctx = new SubExprContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(127);
-						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
+						if (!(precpred(_ctx, 14))) throw new FailedPredicateException(this, "precpred(_ctx, 14)");
 						setState(128);
-						match(DIFERENTE);
+						match(MINUS);
 						setState(129);
-						expr(6);
+						expr(15);
 						}
 						break;
 					case 5:
 						{
-						_localctx = new ExprContext(_parentctx, _parentState);
+						_localctx = new LtExprContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(130);
-						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
+						if (!(precpred(_ctx, 13))) throw new FailedPredicateException(this, "precpred(_ctx, 13)");
 						setState(131);
-						match(E);
+						match(MENOR);
 						setState(132);
-						expr(5);
+						expr(14);
 						}
 						break;
 					case 6:
 						{
-						_localctx = new ExprContext(_parentctx, _parentState);
+						_localctx = new GtExprContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(133);
-						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
+						if (!(precpred(_ctx, 12))) throw new FailedPredicateException(this, "precpred(_ctx, 12)");
 						setState(134);
-						match(OU);
+						match(MAIOR);
 						setState(135);
-						expr(4);
+						expr(13);
+						}
+						break;
+					case 7:
+						{
+						_localctx = new EqExprContext(new ExprContext(_parentctx, _parentState));
+						pushNewRecursionContext(_localctx, _startState, RULE_expr);
+						setState(136);
+						if (!(precpred(_ctx, 11))) throw new FailedPredicateException(this, "precpred(_ctx, 11)");
+						setState(137);
+						match(IGUAL);
+						setState(138);
+						expr(12);
+						}
+						break;
+					case 8:
+						{
+						_localctx = new NeqExprContext(new ExprContext(_parentctx, _parentState));
+						pushNewRecursionContext(_localctx, _startState, RULE_expr);
+						setState(139);
+						if (!(precpred(_ctx, 10))) throw new FailedPredicateException(this, "precpred(_ctx, 10)");
+						setState(140);
+						match(DIFERENTE);
+						setState(141);
+						expr(11);
+						}
+						break;
+					case 9:
+						{
+						_localctx = new AndExprContext(new ExprContext(_parentctx, _parentState));
+						pushNewRecursionContext(_localctx, _startState, RULE_expr);
+						setState(142);
+						if (!(precpred(_ctx, 9))) throw new FailedPredicateException(this, "precpred(_ctx, 9)");
+						setState(143);
+						match(E);
+						setState(144);
+						expr(10);
+						}
+						break;
+					case 10:
+						{
+						_localctx = new OrExprContext(new ExprContext(_parentctx, _parentState));
+						pushNewRecursionContext(_localctx, _startState, RULE_expr);
+						setState(145);
+						if (!(precpred(_ctx, 8))) throw new FailedPredicateException(this, "precpred(_ctx, 8)");
+						setState(146);
+						match(OU);
+						setState(147);
+						expr(9);
 						}
 						break;
 					}
 					} 
 				}
-				setState(140);
+				setState(152);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,9,_ctx);
 			}
@@ -874,23 +1213,31 @@ public class EasyLanguageParser extends Parser {
 	private boolean expr_sempred(ExprContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 0:
-			return precpred(_ctx, 8);
+			return precpred(_ctx, 17);
 		case 1:
-			return precpred(_ctx, 7);
+			return precpred(_ctx, 16);
 		case 2:
-			return precpred(_ctx, 6);
+			return precpred(_ctx, 15);
 		case 3:
-			return precpred(_ctx, 5);
+			return precpred(_ctx, 14);
 		case 4:
-			return precpred(_ctx, 4);
+			return precpred(_ctx, 13);
 		case 5:
-			return precpred(_ctx, 3);
+			return precpred(_ctx, 12);
+		case 6:
+			return precpred(_ctx, 11);
+		case 7:
+			return precpred(_ctx, 10);
+		case 8:
+			return precpred(_ctx, 9);
+		case 9:
+			return precpred(_ctx, 8);
 		}
 		return true;
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u001b\u008e\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001"+
+		"\u0004\u0001\u001f\u009a\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001"+
 		"\u0002\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004"+
 		"\u0002\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007"+
 		"\u0001\u0000\u0005\u0000\u0012\b\u0000\n\u0000\f\u0000\u0015\t\u0000\u0001"+
@@ -912,9 +1259,11 @@ public class EasyLanguageParser extends Parser {
 		"\u0007\u0001\u0007\u0003\u0007u\b\u0007\u0001\u0007\u0001\u0007\u0001"+
 		"\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001"+
 		"\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001"+
-		"\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0005\u0007\u0089\b\u0007\n"+
-		"\u0007\f\u0007\u008c\t\u0007\u0001\u0007\u0000\u0001\u000e\b\u0000\u0002"+
-		"\u0004\u0006\b\n\f\u000e\u0000\u0000\u009d\u0000\u0013\u0001\u0000\u0000"+
+		"\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001"+
+		"\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001"+
+		"\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0005\u0007\u0095\b\u0007\n"+
+		"\u0007\f\u0007\u0098\t\u0007\u0001\u0007\u0000\u0001\u000e\b\u0000\u0002"+
+		"\u0004\u0006\b\n\f\u000e\u0000\u0000\u00ad\u0000\u0013\u0001\u0000\u0000"+
 		"\u0000\u0002\u001d\u0001\u0000\u0000\u0000\u00041\u0001\u0000\u0000\u0000"+
 		"\u0006@\u0001\u0000\u0000\u0000\bB\u0001\u0000\u0000\u0000\nH\u0001\u0000"+
 		"\u0000\u0000\fS\u0001\u0000\u0000\u0000\u000et\u0001\u0000\u0000\u0000"+
@@ -928,56 +1277,64 @@ public class EasyLanguageParser extends Parser {
 		"\u0001\u0000\u0000\u0000\u001d\u0019\u0001\u0000\u0000\u0000\u001d\u001a"+
 		"\u0001\u0000\u0000\u0000\u001d\u001b\u0001\u0000\u0000\u0000\u001d\u001c"+
 		"\u0001\u0000\u0000\u0000\u001e\u0003\u0001\u0000\u0000\u0000\u001f \u0005"+
-		"\u0001\u0000\u0000 !\u0005\u0013\u0000\u0000!2\u0005\u0015\u0000\u0000"+
-		"\"#\u0005\u0002\u0000\u0000#$\u0005\u0013\u0000\u0000$2\u0005\u0015\u0000"+
-		"\u0000%&\u0005\u0001\u0000\u0000&\'\u0005\u0013\u0000\u0000\'(\u0005\u0019"+
-		"\u0000\u0000()\u0005\u0014\u0000\u0000)*\u0005\u001a\u0000\u0000*2\u0005"+
-		"\u0015\u0000\u0000+,\u0005\u0002\u0000\u0000,-\u0005\u0013\u0000\u0000"+
-		"-.\u0005\u0019\u0000\u0000./\u0005\u0014\u0000\u0000/0\u0005\u001a\u0000"+
-		"\u000002\u0005\u0015\u0000\u00001\u001f\u0001\u0000\u0000\u00001\"\u0001"+
+		"\u0001\u0000\u0000 !\u0005\u0017\u0000\u0000!2\u0005\u0019\u0000\u0000"+
+		"\"#\u0005\u0002\u0000\u0000#$\u0005\u0017\u0000\u0000$2\u0005\u0019\u0000"+
+		"\u0000%&\u0005\u0001\u0000\u0000&\'\u0005\u0017\u0000\u0000\'(\u0005\u001d"+
+		"\u0000\u0000()\u0005\u0018\u0000\u0000)*\u0005\u001e\u0000\u0000*2\u0005"+
+		"\u0019\u0000\u0000+,\u0005\u0002\u0000\u0000,-\u0005\u0017\u0000\u0000"+
+		"-.\u0005\u001d\u0000\u0000./\u0005\u0018\u0000\u0000/0\u0005\u001e\u0000"+
+		"\u000002\u0005\u0019\u0000\u00001\u001f\u0001\u0000\u0000\u00001\"\u0001"+
 		"\u0000\u0000\u00001%\u0001\u0000\u0000\u00001+\u0001\u0000\u0000\u0000"+
-		"2\u0005\u0001\u0000\u0000\u000034\u0005\u0013\u0000\u000045\u0005\u0016"+
-		"\u0000\u000056\u0003\u000e\u0007\u000067\u0005\u0015\u0000\u00007A\u0001"+
-		"\u0000\u0000\u000089\u0005\u0013\u0000\u00009:\u0005\u0019\u0000\u0000"+
-		":;\u0003\u000e\u0007\u0000;<\u0005\u001a\u0000\u0000<=\u0005\u0016\u0000"+
-		"\u0000=>\u0003\u000e\u0007\u0000>?\u0005\u0015\u0000\u0000?A\u0001\u0000"+
+		"2\u0005\u0001\u0000\u0000\u000034\u0005\u0017\u0000\u000045\u0005\u001a"+
+		"\u0000\u000056\u0003\u000e\u0007\u000067\u0005\u0019\u0000\u00007A\u0001"+
+		"\u0000\u0000\u000089\u0005\u0017\u0000\u00009:\u0005\u001d\u0000\u0000"+
+		":;\u0003\u000e\u0007\u0000;<\u0005\u001e\u0000\u0000<=\u0005\u001a\u0000"+
+		"\u0000=>\u0003\u000e\u0007\u0000>?\u0005\u0019\u0000\u0000?A\u0001\u0000"+
 		"\u0000\u0000@3\u0001\u0000\u0000\u0000@8\u0001\u0000\u0000\u0000A\u0007"+
-		"\u0001\u0000\u0000\u0000BC\u0005\u0003\u0000\u0000CD\u0005\u0017\u0000"+
-		"\u0000DE\u0003\u000e\u0007\u0000EF\u0005\u0018\u0000\u0000FG\u0005\u0015"+
+		"\u0001\u0000\u0000\u0000BC\u0005\u0003\u0000\u0000CD\u0005\u001b\u0000"+
+		"\u0000DE\u0003\u000e\u0007\u0000EF\u0005\u001c\u0000\u0000FG\u0005\u0019"+
 		"\u0000\u0000G\t\u0001\u0000\u0000\u0000HI\u0005\u0004\u0000\u0000IJ\u0005"+
-		"\u0017\u0000\u0000JK\u0003\u000e\u0007\u0000KL\u0005\u0018\u0000\u0000"+
+		"\u001b\u0000\u0000JK\u0003\u000e\u0007\u0000KL\u0005\u001c\u0000\u0000"+
 		"LP\u0005\u0005\u0000\u0000MO\u0003\u0002\u0001\u0000NM\u0001\u0000\u0000"+
 		"\u0000OR\u0001\u0000\u0000\u0000PN\u0001\u0000\u0000\u0000PQ\u0001\u0000"+
 		"\u0000\u0000Q\u000b\u0001\u0000\u0000\u0000RP\u0001\u0000\u0000\u0000"+
-		"ST\u0005\u0006\u0000\u0000TU\u0005\u0013\u0000\u0000UV\u0005\u0007\u0000"+
+		"ST\u0005\u0006\u0000\u0000TU\u0005\u0017\u0000\u0000UV\u0005\u0007\u0000"+
 		"\u0000VW\u0003\u000e\u0007\u0000WX\u0005\b\u0000\u0000X[\u0003\u000e\u0007"+
 		"\u0000YZ\u0005\t\u0000\u0000Z\\\u0003\u000e\u0007\u0000[Y\u0001\u0000"+
 		"\u0000\u0000[\\\u0001\u0000\u0000\u0000\\]\u0001\u0000\u0000\u0000]a\u0005"+
 		"\u0005\u0000\u0000^`\u0003\u0002\u0001\u0000_^\u0001\u0000\u0000\u0000"+
 		"`c\u0001\u0000\u0000\u0000a_\u0001\u0000\u0000\u0000ab\u0001\u0000\u0000"+
 		"\u0000b\r\u0001\u0000\u0000\u0000ca\u0001\u0000\u0000\u0000de\u0006\u0007"+
-		"\uffff\uffff\u0000eu\u0005\u0014\u0000\u0000fu\u0005\n\u0000\u0000gu\u0005"+
-		"\u000b\u0000\u0000hu\u0005\u0013\u0000\u0000ij\u0005\u0013\u0000\u0000"+
-		"jk\u0005\u0019\u0000\u0000kl\u0003\u000e\u0007\u0000lm\u0005\u001a\u0000"+
-		"\u0000mu\u0001\u0000\u0000\u0000no\u0005\u000e\u0000\u0000ou\u0003\u000e"+
-		"\u0007\u0002pq\u0005\u0017\u0000\u0000qr\u0003\u000e\u0007\u0000rs\u0005"+
-		"\u0018\u0000\u0000su\u0001\u0000\u0000\u0000td\u0001\u0000\u0000\u0000"+
-		"tf\u0001\u0000\u0000\u0000tg\u0001\u0000\u0000\u0000th\u0001\u0000\u0000"+
-		"\u0000ti\u0001\u0000\u0000\u0000tn\u0001\u0000\u0000\u0000tp\u0001\u0000"+
-		"\u0000\u0000u\u008a\u0001\u0000\u0000\u0000vw\n\b\u0000\u0000wx\u0005"+
-		"\u000f\u0000\u0000x\u0089\u0003\u000e\u0007\tyz\n\u0007\u0000\u0000z{"+
-		"\u0005\u0010\u0000\u0000{\u0089\u0003\u000e\u0007\b|}\n\u0006\u0000\u0000"+
-		"}~\u0005\u0011\u0000\u0000~\u0089\u0003\u000e\u0007\u0007\u007f\u0080"+
-		"\n\u0005\u0000\u0000\u0080\u0081\u0005\u0012\u0000\u0000\u0081\u0089\u0003"+
-		"\u000e\u0007\u0006\u0082\u0083\n\u0004\u0000\u0000\u0083\u0084\u0005\f"+
-		"\u0000\u0000\u0084\u0089\u0003\u000e\u0007\u0005\u0085\u0086\n\u0003\u0000"+
-		"\u0000\u0086\u0087\u0005\r\u0000\u0000\u0087\u0089\u0003\u000e\u0007\u0004"+
-		"\u0088v\u0001\u0000\u0000\u0000\u0088y\u0001\u0000\u0000\u0000\u0088|"+
-		"\u0001\u0000\u0000\u0000\u0088\u007f\u0001\u0000\u0000\u0000\u0088\u0082"+
-		"\u0001\u0000\u0000\u0000\u0088\u0085\u0001\u0000\u0000\u0000\u0089\u008c"+
-		"\u0001\u0000\u0000\u0000\u008a\u0088\u0001\u0000\u0000\u0000\u008a\u008b"+
-		"\u0001\u0000\u0000\u0000\u008b\u000f\u0001\u0000\u0000\u0000\u008c\u008a"+
-		"\u0001\u0000\u0000\u0000\n\u0013\u001d1@P[at\u0088\u008a";
+		"\uffff\uffff\u0000ef\u0005\u000e\u0000\u0000fu\u0003\u000e\u0007\u0007"+
+		"gu\u0005\u0018\u0000\u0000hu\u0005\n\u0000\u0000iu\u0005\u000b\u0000\u0000"+
+		"ju\u0005\u0017\u0000\u0000kl\u0005\u0017\u0000\u0000lm\u0005\u001d\u0000"+
+		"\u0000mn\u0003\u000e\u0007\u0000no\u0005\u001e\u0000\u0000ou\u0001\u0000"+
+		"\u0000\u0000pq\u0005\u001b\u0000\u0000qr\u0003\u000e\u0007\u0000rs\u0005"+
+		"\u001c\u0000\u0000su\u0001\u0000\u0000\u0000td\u0001\u0000\u0000\u0000"+
+		"tg\u0001\u0000\u0000\u0000th\u0001\u0000\u0000\u0000ti\u0001\u0000\u0000"+
+		"\u0000tj\u0001\u0000\u0000\u0000tk\u0001\u0000\u0000\u0000tp\u0001\u0000"+
+		"\u0000\u0000u\u0096\u0001\u0000\u0000\u0000vw\n\u0011\u0000\u0000wx\u0005"+
+		"\u0011\u0000\u0000x\u0095\u0003\u000e\u0007\u0012yz\n\u0010\u0000\u0000"+
+		"z{\u0005\u0012\u0000\u0000{\u0095\u0003\u000e\u0007\u0011|}\n\u000f\u0000"+
+		"\u0000}~\u0005\u000f\u0000\u0000~\u0095\u0003\u000e\u0007\u0010\u007f"+
+		"\u0080\n\u000e\u0000\u0000\u0080\u0081\u0005\u0010\u0000\u0000\u0081\u0095"+
+		"\u0003\u000e\u0007\u000f\u0082\u0083\n\r\u0000\u0000\u0083\u0084\u0005"+
+		"\u0013\u0000\u0000\u0084\u0095\u0003\u000e\u0007\u000e\u0085\u0086\n\f"+
+		"\u0000\u0000\u0086\u0087\u0005\u0014\u0000\u0000\u0087\u0095\u0003\u000e"+
+		"\u0007\r\u0088\u0089\n\u000b\u0000\u0000\u0089\u008a\u0005\u0015\u0000"+
+		"\u0000\u008a\u0095\u0003\u000e\u0007\f\u008b\u008c\n\n\u0000\u0000\u008c"+
+		"\u008d\u0005\u0016\u0000\u0000\u008d\u0095\u0003\u000e\u0007\u000b\u008e"+
+		"\u008f\n\t\u0000\u0000\u008f\u0090\u0005\f\u0000\u0000\u0090\u0095\u0003"+
+		"\u000e\u0007\n\u0091\u0092\n\b\u0000\u0000\u0092\u0093\u0005\r\u0000\u0000"+
+		"\u0093\u0095\u0003\u000e\u0007\t\u0094v\u0001\u0000\u0000\u0000\u0094"+
+		"y\u0001\u0000\u0000\u0000\u0094|\u0001\u0000\u0000\u0000\u0094\u007f\u0001"+
+		"\u0000\u0000\u0000\u0094\u0082\u0001\u0000\u0000\u0000\u0094\u0085\u0001"+
+		"\u0000\u0000\u0000\u0094\u0088\u0001\u0000\u0000\u0000\u0094\u008b\u0001"+
+		"\u0000\u0000\u0000\u0094\u008e\u0001\u0000\u0000\u0000\u0094\u0091\u0001"+
+		"\u0000\u0000\u0000\u0095\u0098\u0001\u0000\u0000\u0000\u0096\u0094\u0001"+
+		"\u0000\u0000\u0000\u0096\u0097\u0001\u0000\u0000\u0000\u0097\u000f\u0001"+
+		"\u0000\u0000\u0000\u0098\u0096\u0001\u0000\u0000\u0000\n\u0013\u001d1"+
+		"@P[at\u0094\u0096";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

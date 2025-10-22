@@ -16,6 +16,12 @@ FALSO     : 'falso';
 E         : 'e';
 OU        : 'ou';
 NAO       : 'nao';
+
+PLUS      : '+';
+MINUS     : '-';
+MUL       : '*';
+DIV       : '/';
+
 MENOR     : '<';
 MAIOR     : '>';
 IGUAL     : '==';
@@ -71,18 +77,23 @@ paraCmd
     ;
 
 // -------- EXPRESSÕES --------
+// Usando precedência para evitar ambiguidades
 expr
-    : NUMBER
-    | VERDADEIRO
-    | FALSO
-    | ID
-    | ID ABRECOL expr FECHACOL          // acesso a array
-    | expr MENOR expr                   // menor que
-    | expr MAIOR expr                   // maior que
-    | expr IGUAL expr                   // igual a
-    | expr DIFERENTE expr               // diferente de
-    | expr E expr                       // operador lógico E
-    | expr OU expr                      // operador lógico OU
-    | NAO expr                          // operador lógico NAO
-    | LPAREN expr RPAREN                // parênteses
+    : expr MUL expr                       # MulExpr
+    | expr DIV expr                       # DivExpr
+    | expr PLUS expr                      # AddExpr
+    | expr MINUS expr                     # SubExpr
+    | expr MENOR expr                     # LtExpr
+    | expr MAIOR expr                     # GtExpr
+    | expr IGUAL expr                     # EqExpr
+    | expr DIFERENTE expr                 # NeqExpr
+    | expr E expr                         # AndExpr
+    | expr OU expr                        # OrExpr
+    | NAO expr                            # NotExpr
+    | NUMBER                              # NumberExpr
+    | VERDADEIRO                          # TrueExpr
+    | FALSO                               # FalseExpr
+    | ID                                  # VarExpr
+    | ID ABRECOL expr FECHACOL            # ArrayAccessExpr
+    | LPAREN expr RPAREN                  # ParenExpr
     ;

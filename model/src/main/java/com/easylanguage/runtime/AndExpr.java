@@ -9,9 +9,9 @@ public class AndExpr implements IExpr {
     }
     
     @Override
-    public Object eval(SymbolTable symbols) {
+    public int eval(SymbolTable symbols) {
         boolean leftValue = left.evalAsBool(symbols);
         boolean rightValue = right.evalAsBool(symbols);
-        return leftValue && rightValue;
+        return (leftValue && rightValue) ? 1 : 0;
     }
 }

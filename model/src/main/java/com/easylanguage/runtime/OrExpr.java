@@ -8,26 +8,10 @@ public class OrExpr implements IExpr {
         this.right = right;
     }
 
-    @Override
-    public Object eval(SymbolTable symbols) {
-        Object l = left.eval(symbols);
-        Object r = right.eval(symbols);
-
-        boolean leftValue;
-        boolean rightValue;
-
-        if (l instanceof Boolean) {
-            leftValue = (Boolean) l;
-        } else {
-            leftValue = ((Integer) l) != 0; // trata int como booleano
+        @Override
+        public int eval(SymbolTable symbols) {
+            int leftValue = left.eval(symbols);
+            int rightValue = right.eval(symbols);
+            return (leftValue != 0 || rightValue != 0) ? 1 : 0;
         }
-
-        if (r instanceof Boolean) {
-            rightValue = (Boolean) r;
-        } else {
-            rightValue = ((Integer) r) != 0;
-        }
-
-        return leftValue || rightValue;
-    }
 }

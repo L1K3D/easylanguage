@@ -1,4 +1,6 @@
 C:\Users\Heitor\Documents\Program\easylanguage\model\src\main\java\com\easylanguage\Main.java
+C:\Users\Heitor\Documents\Program\easylanguage\model\src\main\java\com\easylanguage\compiler\CompilerBenchmark.java
+C:\Users\Heitor\Documents\Program\easylanguage\model\src\main\java\com\easylanguage\compiler\JavaCodeGenerator.java
 C:\Users\Heitor\Documents\Program\easylanguage\model\src\main\java\com\easylanguage\generated\EasyLanguageBaseListener.java
 C:\Users\Heitor\Documents\Program\easylanguage\model\src\main\java\com\easylanguage\generated\EasyLanguageBaseVisitor.java
 C:\Users\Heitor\Documents\Program\easylanguage\model\src\main\java\com\easylanguage\generated\EasyLanguageLexer.java

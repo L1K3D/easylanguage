@@ -5,8 +5,25 @@ import org.antlr.v4.runtime.tree.*;
 import com.easylanguage.generated.EasyLanguageLexer;
 import com.easylanguage.generated.EasyLanguageParser;
 import com.easylanguage.runtime.Interpreter;
+import com.easylanguage.compiler.CompilerBenchmark;
 
 public class Main {
+    // Código de teste para benchmark: gera a sequência de Fibonacci iterativamente
+    // (sem funções/if, para compatibilidade com o gerador atual)
+    private static final String BENCHMARK_CODE = """
+            int a;
+            int b;
+            int tmp;
+            int j;
+            a = 0;
+            b = 1;
+            para j de 0 ate 10 passo 1 faca
+                escreva(a);
+                tmp = a + b;
+                a = b;
+                b = tmp;
+            fim
+            """;
 
     // Método utilitário para rodar qualquer código EasyLanguage
     public static void runTest(String titulo, String code) throws Exception {
@@ -87,5 +104,9 @@ public class Main {
             resultado = calculaMedia(a, numeros[0]);
             escreva(resultado);
         """);
+        
+            // Teste de performance - comparação entre interpretado e compilado
+            System.out.println("\n=== Teste de Performance ===");
+            CompilerBenchmark.comparePerformance(BENCHMARK_CODE, 5);
     }
 }

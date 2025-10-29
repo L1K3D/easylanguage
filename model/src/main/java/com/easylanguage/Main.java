@@ -46,5 +46,46 @@ public class Main {
 
         // Teste enquanto
         runTest("Teste ENQUANTO", "int i; i = 0; enquanto (i < 3) faca escreva(i); i = i + 1;");
+
+        // Teste de funções e escopo
+        runTest("Teste de funções e escopo", """
+            func soma(int a, int b) : int faca
+                int resultado;
+                resultado = a + b;
+                return resultado;
+            fim
+
+            proc imprime(int x) faca
+                escreva(x);
+            fim
+
+            int x;
+            x = 10;
+            imprime(soma(x, 5));
+            imprime(x);
+        """);
+
+        // Testes do sistema de tipos
+        runTest("Teste do sistema de tipos", """
+            int a;
+            boolean b;
+            int numeros[3];
+
+            a = 42;
+            b = verdadeiro;
+            numeros[0] = 10;
+
+            escreva(a + 5);
+            escreva(b e verdadeiro);
+            escreva(a > 20);
+
+            func calculaMedia(int x, int y) : int faca
+                return (x + y) / 2;
+            fim
+
+            int resultado;
+            resultado = calculaMedia(a, numeros[0]);
+            escreva(resultado);
+        """);
     }
 }

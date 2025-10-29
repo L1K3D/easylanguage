@@ -38,6 +38,56 @@ public interface EasyLanguageListener extends ParseTreeListener {
 	 */
 	void exitDecl(EasyLanguageParser.DeclContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link EasyLanguageParser#tipo}.
+	 * @param ctx the parse tree
+	 */
+	void enterTipo(EasyLanguageParser.TipoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EasyLanguageParser#tipo}.
+	 * @param ctx the parse tree
+	 */
+	void exitTipo(EasyLanguageParser.TipoContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link EasyLanguageParser#funcDecl}.
+	 * @param ctx the parse tree
+	 */
+	void enterFuncDecl(EasyLanguageParser.FuncDeclContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EasyLanguageParser#funcDecl}.
+	 * @param ctx the parse tree
+	 */
+	void exitFuncDecl(EasyLanguageParser.FuncDeclContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link EasyLanguageParser#procDecl}.
+	 * @param ctx the parse tree
+	 */
+	void enterProcDecl(EasyLanguageParser.ProcDeclContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EasyLanguageParser#procDecl}.
+	 * @param ctx the parse tree
+	 */
+	void exitProcDecl(EasyLanguageParser.ProcDeclContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link EasyLanguageParser#paramList}.
+	 * @param ctx the parse tree
+	 */
+	void enterParamList(EasyLanguageParser.ParamListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EasyLanguageParser#paramList}.
+	 * @param ctx the parse tree
+	 */
+	void exitParamList(EasyLanguageParser.ParamListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link EasyLanguageParser#param}.
+	 * @param ctx the parse tree
+	 */
+	void enterParam(EasyLanguageParser.ParamContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EasyLanguageParser#param}.
+	 * @param ctx the parse tree
+	 */
+	void exitParam(EasyLanguageParser.ParamContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link EasyLanguageParser#assign}.
 	 * @param ctx the parse tree
 	 */
@@ -77,6 +127,36 @@ public interface EasyLanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitParaCmd(EasyLanguageParser.ParaCmdContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link EasyLanguageParser#call}.
+	 * @param ctx the parse tree
+	 */
+	void enterCall(EasyLanguageParser.CallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EasyLanguageParser#call}.
+	 * @param ctx the parse tree
+	 */
+	void exitCall(EasyLanguageParser.CallContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link EasyLanguageParser#argList}.
+	 * @param ctx the parse tree
+	 */
+	void enterArgList(EasyLanguageParser.ArgListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EasyLanguageParser#argList}.
+	 * @param ctx the parse tree
+	 */
+	void exitArgList(EasyLanguageParser.ArgListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link EasyLanguageParser#returnStmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterReturnStmt(EasyLanguageParser.ReturnStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EasyLanguageParser#returnStmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitReturnStmt(EasyLanguageParser.ReturnStmtContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code MulExpr}
 	 * labeled alternative in {@link EasyLanguageParser#expr}.
@@ -257,6 +337,18 @@ public interface EasyLanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVarExpr(EasyLanguageParser.VarExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code CallExpr}
+	 * labeled alternative in {@link EasyLanguageParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterCallExpr(EasyLanguageParser.CallExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code CallExpr}
+	 * labeled alternative in {@link EasyLanguageParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitCallExpr(EasyLanguageParser.CallExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code NotExpr}
 	 * labeled alternative in {@link EasyLanguageParser#expr}.

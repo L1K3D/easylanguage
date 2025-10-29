@@ -3,6 +3,9 @@ grammar EasyLanguage;
 // -------- TOKENS --------
 INT       : 'int';
 BOOLEANO  : 'boolean';
+FUNC      : 'func';
+PROC      : 'proc';
+RETURN    : 'return';
 WRITE     : 'escreva';
 ENQUANTO  : 'enquanto';
 FACA      : 'faca';
@@ -10,6 +13,7 @@ PARA      : 'para';
 DE        : 'de';
 ATE       : 'ate';
 PASSO     : 'passo';
+FIM       : 'fim';
 
 VERDADEIRO: 'verdadeiro';
 FALSO     : 'falso';
@@ -36,32 +40,54 @@ LPAREN    : '(';
 RPAREN    : ')';
 ABRECOL   : '[';
 FECHACOL  : ']';
+COMMA     : ',';
+COLON     : ':';
 
 WS        : [ \t\r\n]+ -> skip;
 
 // -------- REGRAS --------
 program
-    : (command)* EOF
+    : (decl | funcDecl | procDecl | command)* EOF
     ;
 
 command
-    : decl
-    | assign
+    : assign
     | write
     | enquantoCmd
     | paraCmd
+    | call SEMI
+    | returnStmt
     ;
 
 decl
-    : INT ID SEMI
-    | BOOLEANO ID SEMI
-    | INT ID ABRECOL NUMBER FECHACOL SEMI
-    | BOOLEANO ID ABRECOL NUMBER FECHACOL SEMI
+    : tipo ID SEMI
+    | tipo ID ABRECOL NUMBER FECHACOL SEMI
+    ;
+
+tipo
+    : INT
+    | BOOLEANO
+    ;
+
+funcDecl
+    : FUNC ID LPAREN paramList? RPAREN COLON tipo FACA (decl | command)* FIM
+    ;
+
+procDecl
+    : PROC ID LPAREN paramList? RPAREN FACA (decl | command)* FIM
+    ;
+
+paramList
+    : param (COMMA param)*
+    ;
+
+param
+    : tipo ID
     ;
 
 assign
     : ID EQ expr SEMI
-    | ID ABRECOL expr FECHACOL EQ expr SEMI   // atribuição em array
+    | ID ABRECOL expr FECHACOL EQ expr SEMI
     ;
 
 write
@@ -76,8 +102,19 @@ paraCmd
     : PARA ID DE expr ATE expr (PASSO expr)? FACA command*
     ;
 
+call
+    : ID LPAREN argList? RPAREN
+    ;
+
+argList
+    : expr (COMMA expr)*
+    ;
+
+returnStmt
+    : RETURN expr SEMI
+    ;
+
 // -------- EXPRESSÕES --------
-// Usando precedência para evitar ambiguidades
 expr
     : expr MUL expr                       # MulExpr
     | expr DIV expr                       # DivExpr
@@ -95,5 +132,6 @@ expr
     | FALSO                               # FalseExpr
     | ID                                  # VarExpr
     | ID ABRECOL expr FECHACOL            # ArrayAccessExpr
+    | call                                # CallExpr
     | LPAREN expr RPAREN                  # ParenExpr
     ;

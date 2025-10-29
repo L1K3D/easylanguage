@@ -1,71 +1,127 @@
 package com.easylanguage.runtime;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class SymbolTable {
-    private Map<String, Object> table = new HashMap<>();
+    private final Deque<Map<String, Object>> scopes = new ArrayDeque<>();
+    // parallel structure to store variable types per scope
+    private final Deque<Map<String, String>> typeScopes = new ArrayDeque<>();
+    private final Map<String, FuncDecl> functions = new HashMap<>();
+    private final Map<String, ProcDecl> procedures = new HashMap<>();
+    private CallStack callStack = new CallStack();
 
-    // Declaração de variáveis escalares
+    public SymbolTable() {
+        // escopo global
+        scopes.push(new HashMap<>());
+        typeScopes.push(new HashMap<>());
+    }
+
+    // Escopos
+    public SymbolTable pushScope() {
+        scopes.push(new HashMap<>());
+        typeScopes.push(new HashMap<>());
+        return this;
+    }
+
+    public void popScope() {
+        if (scopes.size() <= 1) {
+            throw new RuntimeException("Não é possível remover o escopo global.");
+        }
+        scopes.pop();
+        typeScopes.pop();
+    }
+
+    // Declarações
     public void declareInt(String name) {
-        table.put(name, 0);
+        if (current().containsKey(name)) throw new RuntimeException("Nome já declarado no escopo atual: " + name);
+        current().put(name, 0);
+        typeScopes.peek().put(name, "int");
     }
 
-    public void declareBoolean(String name) {
-        table.put(name, Boolean.FALSE);
+    public void declareBool(String name) {
+        if (current().containsKey(name)) throw new RuntimeException("Nome já declarado no escopo atual: " + name);
+        current().put(name, false);
+        typeScopes.peek().put(name, "boolean");
     }
 
-    // Declaração de arrays
     public void declareIntArray(String name, int size) {
-        table.put(name, new int[size]);
+        if (current().containsKey(name)) throw new RuntimeException("Nome já declarado no escopo atual: " + name);
+        int[] arr = new int[size];
+        current().put(name, arr);
+        typeScopes.peek().put(name, "int[]");
     }
 
-    public void declareBooleanArray(String name, int size) {
-        table.put(name, new boolean[size]);
+    public void declareBoolArray(String name, int size) {
+        if (current().containsKey(name)) throw new RuntimeException("Nome já declarado no escopo atual: " + name);
+        boolean[] arr = new boolean[size];
+        current().put(name, arr);
+        typeScopes.peek().put(name, "boolean[]");
     }
 
-    // Atribuição de valores escalares
+    // Atribuição e leitura
     public void assign(String name, Object value) {
-        if (!table.containsKey(name)) {
-            throw new RuntimeException("Variável não declarada: " + name);
-        }
-        table.put(name, value);
+        Map<String, Object> scope = findScope(name);
+        if (scope == null) throw new RuntimeException("Variável não declarada: " + name);
+        scope.put(name, value);
     }
 
-    // Atribuição em arrays
-    public void assignArrayElement(String name, int index, Object value) {
-        if (!table.containsKey(name)) {
-            throw new RuntimeException("Array não declarado: " + name);
-        }
-        Object arr = table.get(name);
-        if (arr instanceof int[]) {
-            ((int[]) arr)[index] = (Integer) value;
-        } else if (arr instanceof boolean[]) {
-            ((boolean[]) arr)[index] = (Boolean) value;
-        } else {
-            throw new RuntimeException("Símbolo não é um array: " + name);
-        }
-    }
-
-    // Recuperar valores escalares
     public Object get(String name) {
-        if (!table.containsKey(name)) {
-            throw new RuntimeException("Variável não declarada: " + name);
+        // Primeiro procura na pilha de chamadas
+        if (callStack != null && !callStack.isEmpty() && callStack.currentFrame().hasLocal(name)) {
+            return callStack.currentFrame().getLocal(name);
         }
-        return table.get(name);
+        // Se não encontrar, procura nos escopos
+        Map<String, Object> scope = findScope(name);
+        if (scope == null) throw new RuntimeException("Variável não declarada: " + name);
+        return scope.get(name);
     }
 
-    // Recuperar elementos de arrays
-    public Object getArrayElement(String name, int index) {
-        if (!table.containsKey(name)) {
-            throw new RuntimeException("Array não declarado: " + name);
+    public String getType(String name) {
+        // First check call stack locals — currently we don't store types in CallStack/StackFrame,
+        // so fallback to lexical scopes
+        for (Map<String, String> ts : typeScopes) {
+            if (ts.containsKey(name)) return ts.get(name);
         }
-        Object arr = table.get(name);
-        if (arr instanceof int[]) {
-            return ((int[]) arr)[index];
-        } else if (arr instanceof boolean[]) {
-            return ((boolean[]) arr)[index];
+        return null;
+    }
+
+    public void set(String name, Object value) {
+        // Se a variável existir no frame atual, atualiza lá
+        if (callStack != null && !callStack.isEmpty() && callStack.currentFrame().hasLocal(name)) {
+            callStack.currentFrame().setLocal(name, value);
+            return;
         }
-        throw new RuntimeException("Símbolo não é um array: " + name);
+        // Caso contrário, tenta atualizar no escopo apropriado
+        Map<String, Object> scope = findScope(name);
+        if (scope == null) throw new RuntimeException("Variável não declarada: " + name);
+        scope.put(name, value);
+    }
+
+    private Map<String, Object> findScope(String name) {
+        for (Map<String, Object> scope : scopes) {
+            if (scope.containsKey(name)) return scope;
+        }
+        return null;
+    }
+
+    private Map<String, Object> current() {
+        return scopes.peek();
+    }
+
+    // Funções e procedimentos
+    public void registerFunction(FuncDecl func) {
+        functions.put(func.getName(), func);
+    }
+
+    public void registerProcedure(ProcDecl proc) {
+        procedures.put(proc.getName(), proc);
+    }
+
+    public FuncDecl getFunction(String name) {
+        return functions.get(name);
+    }
+
+    public ProcDecl getProcedure(String name) {
+        return procedures.get(name);
     }
 }
